@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Ticketmaster</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Full screen website container */
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Dark overlay for the error message */
+        #error-overlay {
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            text-align: center;
+        }
+
+        .message-box {
+            padding: 40px;
+            border: 2px solid #ff4d4d;
+            border-radius: 15px;
+            background: #1a1a1a;
+            max-width: 80%;
+        }
+
+        h2 {
+            color: #ff4d4d;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 20px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <iframe src="https://www.ticketmaster.es"></iframe>
+
+    <div id="error-overlay">
+        <div class="message-box">
+            <h2>ERROR</h2>
+            <p>CONÉCTESE A PIA VPN ANTES DE CONTINUAR PARA OBTENER ACCESO</p>
+        </div>
+    </div>
+
+    <script>
+        // Set to 8000 milliseconds (8 seconds)
+        setTimeout(function() {
+            document.getElementById('error-overlay').style.display = 'flex';
+        }, 8000);
+    </script>
+
+</body>
+</html>
