@@ -2,76 +2,66 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso Ticketmaster</title>
+    <title>Ticketmaster - Esperando respuesta...</title>
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        /* Full screen website container */
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* Dark overlay for the error message */
-        #error-overlay {
-            display: none; /* Initially hidden */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            color: white;
-            flex-direction: column;
+        body {
+            background-color: #f6f6f6;
+            display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #loader {
             text-align: center;
+            display: block;
         }
 
-        .message-box {
-            padding: 40px;
-            border: 2px solid #ff4d4d;
-            border-radius: 15px;
-            background: #1a1a1a;
-            max-width: 80%;
+        #error-screen {
+            display: none;
+            text-align: center;
+            background-color: white;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border-top: 5px solid #e10600;
         }
 
-        h2 {
-            color: #ff4d4d;
-            font-size: 32px;
-            margin-bottom: 10px;
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #006cff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
         }
 
-        p {
-            font-size: 20px;
-            line-height: 1.5;
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        h1 { color: #cc0000; font-size: 24px; }
+        p { font-size: 18px; color: #333; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <iframe src="https://www.ticketmaster.es"></iframe>
+    <div id="loader">
+        <div class="spinner"></div>
+        <p>Cargando ticketmaster.es...</p>
+    </div>
 
-    <div id="error-overlay">
-        <div class="message-box">
-            <h2>ERROR</h2>
-            <p>CONÉCTESE A PIA VPN ANTES DE CONTINUAR PARA OBTENER ACCESO</p>
-        </div>
+    <div id="error-screen">
+        <h1>ERROR DE ACCESO</h1>
+        <p>CONÉCTESE A PIA VPN ANTES DE CONTINUAR PARA OBTENER ACCESO</p>
     </div>
 
     <script>
-        // Set to 8000 milliseconds (8 seconds)
         setTimeout(function() {
-            document.getElementById('error-overlay').style.display = 'flex';
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('error-screen').style.display = 'block';
+            document.body.style.backgroundColor = "#1a1a1a"; // Darken background on error
         }, 8000);
     </script>
 
