@@ -2,67 +2,159 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ticketmaster - Esperando respuesta...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Access Terminal</title>
     <style>
+        /* Typewriter font stack */
         body {
-            background-color: #f6f6f6;
+            background-color: #0d0d0d;
+            color: #d1d1d1;
+            font-family: 'Courier New', Courier, monospace;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif;
+            text-transform: uppercase;
         }
 
-        #loader {
-            text-align: center;
+        .terminal-window {
+            width: 90%;
+            max-width: 600px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            position: relative;
+        }
+
+        .terminal-header {
+            color: #555;
+            font-size: 12px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        #loading-section {
             display: block;
         }
 
-        #error-screen {
+        #interaction-section {
             display: none;
-            text-align: center;
-            background-color: white;
-            padding: 50px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            border-top: 5px solid #e10600;
         }
 
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #006cff;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background: #d1d1d1;
+            animation: blink 0.8s infinite;
+            vertical-align: middle;
         }
 
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
 
-        h1 { color: #cc0000; font-size: 24px; }
-        p { font-size: 18px; color: #333; font-weight: bold; }
+        .btn-group {
+            margin-top: 25px;
+        }
+
+        button {
+            background: transparent;
+            color: #d1d1d1;
+            border: 1px solid #d1d1d1;
+            padding: 10px 25px;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            margin-right: 15px;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background: #d1d1d1;
+            color: #000;
+        }
+
+        .error-msg {
+            color: #ff3e3e;
+            margin-top: 20px;
+            border: 1px dashed #ff3e3e;
+            padding: 15px;
+        }
+
+        .success-msg {
+            color: #00ff41;
+            margin-top: 20px;
+        }
+
+        a {
+            color: #00ff41;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="spinner"></div>
-        <p>Cargando ticketmaster.es...</p>
-    </div>
+    <div class="terminal-window">
+        <div class="terminal-header">SECURE_GATEWAY_V4.0.8 // ACCESS_POINT: TICKETMASTER.ES</div>
 
-    <div id="error-screen">
-        <h1>ERROR DE ACCESO</h1>
-        <p>CONÉCTESE A PIA VPN ANTES DE CONTINUAR PARA OBTENER ACCESO</p>
+        <!-- Section 1: Initial Loading/Scan (8 Seconds) -->
+        <div id="loading-section">
+            <p>> INICIALIZANDO ESCANEO DE SEGURIDAD...</p>
+            <p>> VERIFICANDO PROTOCOLOS DE RED... <span id="status">PENDIENTE</span></p>
+            <p>> LOCALIZANDO PUNTO DE ACCESO ESPAÑA...</p>
+            <div class="cursor"></div>
+        </div>
+
+        <!-- Section 2: The Question -->
+        <div id="interaction-section">
+            <p>> ESCANEO COMPLETADO.</p>
+            <p style="color: #e6b400;">> AVISO: ¿TIENE ACTIVADO SU PIA VPN?</p>
+            
+            <div class="btn-group" id="controls">
+                <button onclick="handleChoice(true)">SÍ</button>
+                <button onclick="handleChoice(false)">NO</button>
+            </div>
+
+            <div id="result-display"></div>
+        </div>
     </div>
 
     <script>
+        // Wait 8 seconds before showing the question
         setTimeout(function() {
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('error-screen').style.display = 'block';
-            document.body.style.backgroundColor = "#1a1a1a"; // Darken background on error
+            document.getElementById('loading-section').style.display = 'none';
+            document.getElementById('interaction-section').style.display = 'block';
         }, 8000);
+
+        function handleChoice(hasVPN) {
+            const resultDisplay = document.getElementById('result-display');
+            const controls = document.getElementById('controls');
+            
+            // Hide buttons after clicking
+            controls.style.display = 'none';
+
+            if (hasVPN) {
+                resultDisplay.innerHTML = `
+                    <div class="success-msg">
+                        <p>> CONEXIÓN VERIFICADA EXIETOSAMENTE.</p>
+                        <p>> REDIRIGIENDO A: <a href="https://www.ticketmaster.es">WWW.TICKETMASTER.ES</a></p>
+                    </div>
+                `;
+                // Optional: Auto-redirect after 2 seconds
+                // setTimeout(() => { window.location.href = "https://www.ticketmaster.es"; }, 2000);
+            } else {
+                resultDisplay.innerHTML = `
+                    <div class="error-msg">
+                        <p>> ERROR DE ACCESO:</p>
+                        <p>POR FAVOR, CONÉCTESE A PIA VPN ANTES DE CONTINUAR PARA OBTENER ACCESO.</p>
+                    </div>
+                    <p style="margin-top:15px; font-size: 12px;">REINICIE LA SESIÓN UNA VEZ CONECTADO.</p>
+                `;
+            }
+        }
     </script>
 
 </body>
